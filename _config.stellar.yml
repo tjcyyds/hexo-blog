@@ -1,0 +1,92 @@
+# Stellar 主题自定义配置(仿 Thun888 风格)
+# 文档: https://xaoxuu.com/wiki/stellar/theme-settings/
+
+# 左上角 logo 区(头像 + 标题 + 副标题)
+logo:
+  avatar: https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg
+  title: '[每日记录](/)'
+  subtitle: 每天记录一点 | 见证成长
+
+# 侧边栏主功能导航菜单(仿 Thun888 的彩色图标菜单)
+# 颜色完全对齐 Thun888: 博客青/归档绿/标签红/关于橙
+menubar:
+  items:
+    - id: post
+      theme: '#1bcdfc'
+      icon: solar:documents-bold-duotone
+      title: 博客
+      url: /
+    - id: archives
+      theme: '#3dc550'
+      icon: solar:notebook-bookmark-bold-duotone
+      title: 归档
+      url: /archives/
+    - id: tags
+      theme: '#f44336'
+      icon: solar:tag-bold-duotone
+      title: 标签
+      url: /tags/
+    - id: about
+      theme: '#fa6400'
+      icon: solar:user-id-bold-duotone
+      title: 关于
+      url: /about/
+
+# 注入: 仿 Thun888 的动态粒子背景 + 透明化 body 让背景透出
+inject:
+  head:
+    - |
+      <style>
+      body { background: transparent !important; }
+      #thun-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+      </style>
+  script:
+    - |
+      <script>
+      (function(){
+        var canvas = document.createElement('canvas');
+        canvas.id = 'thun-bg';
+        document.body.appendChild(canvas);
+        var ctx = canvas.getContext('2d');
+        var colors = ['#1bcdfc','#3dc550','#f44336','#fa6400'];
+        var w,h,particles=[];
+        function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; }
+        function init(){
+          particles=[];
+          var count=Math.min(90, Math.floor(w*h/16000));
+          for(var i=0;i<count;i++){
+            particles.push({
+              x:Math.random()*w, y:Math.random()*h,
+              vx:(Math.random()-0.5)*0.4, vy:(Math.random()-0.5)*0.4,
+              r:Math.random()*1.8+0.6,
+              c:colors[Math.floor(Math.random()*colors.length)]
+            });
+          }
+        }
+        function draw(){
+          ctx.clearRect(0,0,w,h);
+          for(var i=0;i<particles.length;i++){
+            var p=particles[i];
+            p.x+=p.vx; p.y+=p.vy;
+            if(p.x<0||p.x>w) p.vx*=-1;
+            if(p.y<0||p.y>h) p.vy*=-1;
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fillStyle=p.c; ctx.globalAlpha=0.65; ctx.fill();
+            for(var j=i+1;j<particles.length;j++){
+              var q=particles[j];
+              var dx=p.x-q.x, dy=p.y-q.y;
+              var d=Math.sqrt(dx*dx+dy*dy);
+              if(d<120){
+                ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+                ctx.strokeStyle=p.c; ctx.globalAlpha=0.12*(1-d/120); ctx.lineWidth=1; ctx.stroke();
+              }
+            }
+          }
+          ctx.globalAlpha=1;
+          requestAnimationFrame(draw);
+        }
+        resize(); init(); draw();
+        window.addEventListener('resize', function(){ resize(); init(); });
+      })();
+      </script>
