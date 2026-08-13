@@ -35,9 +35,6 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Apply custom theme template
-        run: cp source/_bak/index.ejs.custom node_modules/hexo-theme-stellar/layout/index.ejs
-
       - name: Build with Hexo
         run: npm run build
 
