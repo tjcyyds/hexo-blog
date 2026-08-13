@@ -54,6 +54,22 @@ inject:
       .expire-note { margin-bottom: 18px; }
       /* 烟花画布(覆盖在最上层, 不拦截点击) */
       #firework-canvas { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+      /* 首页「最近更新」简洁列表样式(仿 Thun888) */
+      .home-recent { margin-top: 0; }
+      .home-recent .widget-header { margin-bottom: 12px; font-size: 1.1rem; }
+      .home-recent .widget-body { display: flex; flex-direction: column; gap: 4px; }
+      .home-recent .widget-body .item.title {
+        display: block; padding: 10px 16px; border-radius: 8px;
+        color: var(--text-p1); background: var(--bg-a20);
+        transition: background .2s, color .2s; line-height: 1.4;
+      }
+      .home-recent .widget-body .item.title:hover {
+        background: var(--bg-a50); color: var(--text);
+      }
+      .home-recent .widget-body .item.title .title {
+        font-size: 1rem; font-weight: 500;
+        display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden;
+      }
       </style>
   script:
     - |

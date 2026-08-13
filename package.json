@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "prebuild": "cp source/_bak/index.ejs.custom node_modules/hexo-theme-stellar/layout/index.ejs",
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",

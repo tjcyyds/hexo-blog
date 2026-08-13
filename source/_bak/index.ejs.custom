@@ -1,0 +1,52 @@
+<%
+if (page.menu_id == undefined) {
+  page.menu_id = 'post';
+}
+if (page.title && page.wiki) {
+  page.robots = 'noindex,follow';
+}
+// 首页评论区：仅首页第一页，默认不显示，可通过 site_tree.home.comments 开启/覆盖
+var homeCmt = theme.site_tree?.home?.comments
+if (homeCmt && homeCmt !== false && is_home_first_page()) {
+  page.comments = true;
+  if (typeof homeCmt === 'object') {
+    if (homeCmt.service) {
+      page.comments_service = homeCmt.service;
+    }
+    if (homeCmt.comment_title != null) {
+      page.comment_title = homeCmt.comment_title;
+    }
+    if (homeCmt.comment_id != null) {
+      page.comment_id = homeCmt.comment_id;
+    }
+    var homeCommentServices = ['beaudar', 'utterances', 'giscus', 'twikoo', 'waline', 'artalk'];
+    for (var i = 0; i < homeCommentServices.length; i++) {
+      var key = homeCommentServices[i];
+      if (homeCmt[key]) {
+        page[key] = homeCmt[key];
+      }
+    }
+  }
+}
+
+// 取全部已发布文章，按更新时间倒序，最多显示 50 篇
+var homePosts = site.posts.filter(function(p){ return p.title && p.title.length > 0; }).sort('updated', -1);
+if (homePosts.length > 50) { homePosts.length = 50; }
+%>
+
+<widget class="widget-wrapper recent post-list home-recent">
+  <div class="widget-header dis-select">
+    <span class="name">最近更新</span>
+  </div>
+  <div class="widget-body fs14">
+    <% homePosts.forEach(function(post){ %>
+      <a class="item title" href="<%- url_for(post.link || post.path) %>">
+        <span class="title"><%- post.title %></span>
+      </a>
+    <% }) %>
+  </div>
+</widget>
+
+<% if (homeCmt && homeCmt !== false && is_home_first_page()) { %>
+  <%- partial('_partial/comments/layout') %>
+<% } %>

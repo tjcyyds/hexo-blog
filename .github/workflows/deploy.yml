@@ -35,8 +35,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Apply custom theme template
+        run: cp source/_bak/index.ejs.custom node_modules/hexo-theme-stellar/layout/index.ejs
+
       - name: Build with Hexo
-        run: npx hexo generate
+        run: npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
