@@ -44,26 +44,28 @@ inject:
       .menu {
         display: flex !important;
         flex-direction: row !important;
+        flex-wrap: nowrap !important;
         justify-content: center;
         align-items: center;
-        gap: 10px;
+        gap: 6px;
         padding: 10px 0 14px;
         margin: 0;
       }
       .menu .nav-item {
         position: relative;
         flex: 0 0 auto;
-        width: 44px;
-        height: 44px;
+        width: 38px;
+        height: 38px;
         display: inline-flex !important;
         align-items: center;
         justify-content: center;
-        border-radius: 12px;
+        border-radius: 10px;
         transition: all .25s ease;
-        background: rgba(255,255,255,.35);
+        background: rgba(255,255,255,.45);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.4);
       }
       .menu .nav-item:hover {
-        background: rgba(255,255,255,.65);
+        background: rgba(255,255,255,.75);
         transform: translateY(-2px);
       }
       .menu .nav-item span:not(.active-dot) {
@@ -71,14 +73,15 @@ inject:
       }
       .menu .nav-item .icon,
       .menu .nav-item svg {
-        width: 22px !important;
-        height: 22px !important;
+        width: 18px !important;
+        height: 18px !important;
         color: #4a5568;
+        fill: currentColor;
         transition: color .25s ease;
       }
       .menu .nav-item.active {
         background: var(--item-theme);
-        box-shadow: 0 4px 14px color-mix(in srgb, var(--item-theme) 45%, transparent);
+        box-shadow: 0 3px 10px color-mix(in srgb, var(--item-theme) 45%, transparent);
       }
       .menu .nav-item.active .icon,
       .menu .nav-item.active svg {
@@ -86,10 +89,10 @@ inject:
       }
       .menu .nav-item .active-dot {
         position: absolute;
-        bottom: 6px;
-        right: 6px;
-        width: 7px;
-        height: 7px;
+        bottom: 5px;
+        right: 5px;
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
         background: #fff;
         box-shadow: 0 0 0 1.5px var(--item-theme);
