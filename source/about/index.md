@@ -4,8 +4,6 @@ date: 2026-08-13
 updated: 2026-08-13
 menu_id: about
 ---
-# 关于我
-
 在读大学生。学着把普通的日子，过成自己会想念的样子。
 
 这里是我的一点「Cyber 花园」——每天记一笔，写运动、写听歌、写那些让我觉得活着真好的瞬间。不追求完美，只记录真实。
@@ -18,8 +16,6 @@ menu_id: about
 - 觅食：吃没吃过的，记没记过的
 
 **这个站点**
-- 写作：Obsidian
-- 框架：Hexo + Stellar
-- 部署：GitHub Pages
+写作 Obsidian · 框架 Hexo + Stellar · 部署 GitHub Pages
 
 > 认真生活，慢慢生长。

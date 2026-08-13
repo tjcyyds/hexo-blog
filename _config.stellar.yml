@@ -55,6 +55,26 @@ inject:
       /* 烟花画布(覆盖在最上层, 不拦截点击) */
       #firework-canvas { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
       </style>
+    # 关于页专属样式(用 :has 作用域, 不误伤其他页面)
+    - |
+      <style>
+      /* 隐藏关于页的「发布于/更新于」元信息和空目录卡片 */
+      body:has(.breadcrumb[href*="/about/"]) #post-meta { display: none; }
+      body:has(.breadcrumb[href*="/about/"]) #data-toc { display: none; }
+      /* 座右铭：居中、加大、用关于页主题橙 */
+      body:has(.breadcrumb[href*="/about/"]) blockquote {
+        text-align: center;
+        font-size: 1.15em;
+        font-weight: 600;
+        border-left: none !important;
+        color: var(--item-theme, #fa6400);
+        margin: 2.6em 0 0.5em;
+        opacity: 1;
+      }
+      body:has(.breadcrumb[href*="/about/"]) blockquote p { margin: 0; }
+      /* 技术栈行内说明与上方列表拉开间距 */
+      body:has(.breadcrumb[href*="/about/"]) .md-text > p:last-of-type { margin-top: 6px; }
+      </style>
   script:
     - |
       <script>
