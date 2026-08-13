@@ -1,5 +1,6 @@
 ---
 title: 关于
+subtitle: 在读大学生 · 记录普通的日子
 date: 2026-08-13
 updated: 2026-08-13
 menu_id: about
@@ -16,6 +17,7 @@ menu_id: about
 - 觅食：吃没吃过的，记没记过的
 
 **这个站点**
+
 写作 Obsidian · 框架 Hexo + Stellar · 部署 GitHub Pages
 
 > 认真生活，慢慢生长。

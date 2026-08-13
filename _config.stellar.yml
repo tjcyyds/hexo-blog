@@ -74,6 +74,49 @@ inject:
       body:has(.breadcrumb[href*="/about/"]) blockquote p { margin: 0; }
       /* 技术栈行内说明与上方列表拉开间距 */
       body:has(.breadcrumb[href*="/about/"]) .md-text > p:last-of-type { margin-top: 6px; }
+
+      /* 首段导语：稍大、更松弛 */
+      body:has(.breadcrumb[href*="/about/"]) .md-text > p:first-of-type {
+        font-size: 1.08em;
+        line-height: 1.95;
+        color: #454b54;
+      }
+
+      /* 小标题(平时在做 / 这个站点) 化身为分区标签 */
+      body:has(.breadcrumb[href*="/about/"]) .md-text > p > strong {
+        display: block;
+        font-size: 13px;
+        letter-spacing: 3px;
+        color: var(--item-theme, #fa6400);
+        margin: 2em 0 .9em;
+        padding-bottom: 6px;
+        border-bottom: 1px solid color-mix(in srgb, var(--item-theme, #fa6400) 28%, transparent);
+      }
+
+      /* 兴趣清单：双列柔和卡片网格 */
+      body:has(.breadcrumb[href*="/about/"]) .md-text > ul {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding-left: 0;
+        list-style: none;
+      }
+      body:has(.breadcrumb[href*="/about/"]) .md-text > ul > li {
+        margin: 0;
+        padding: 11px 14px 11px 16px;
+        background: rgba(255,255,255,.55);
+        border-radius: 10px;
+        border-left: 3px solid var(--item-theme, #fa6400);
+        font-size: 14px;
+        line-height: 1.55;
+        box-shadow: 0 1px 3px rgba(0,0,0,.04);
+      }
+      body:has(.breadcrumb[href*="/about/"]) .md-text > ul > li::before { display: none; }
+
+      /* 窄屏单列 */
+      @media (max-width: 600px) {
+        body:has(.breadcrumb[href*="/about/"]) .md-text > ul { grid-template-columns: 1fr; }
+      }
       </style>
   script:
     - |
