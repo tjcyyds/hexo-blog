@@ -40,6 +40,21 @@ inject:
       body { background: transparent !important; }
       #thun-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
       </style>
+    # 仿 Thun888「主题改动小记」的 DIY 样式: 运行时间/复制提醒/过期提醒/烟花
+    - |
+      <style>
+      /* 运行时间(页脚) */
+      .site-runtime { font-size: 12px; opacity: .7; margin-top: 6px; }
+      /* 复制提醒 toast */
+      .copy-toast { position: fixed; left: 50%; top: 22px; transform: translateX(-50%) translateY(-16px);
+        background: rgba(20,20,30,.92); color: #fff; padding: 8px 16px; border-radius: 8px;
+        font-size: 13px; opacity: 0; transition: .3s; z-index: 9999; pointer-events: none; }
+      .copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+      /* 文章过期提醒 */
+      .expire-note { margin-bottom: 18px; }
+      /* 烟花画布(覆盖在最上层, 不拦截点击) */
+      #firework-canvas { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+      </style>
   script:
     - |
       <script>
@@ -88,5 +103,94 @@ inject:
         }
         resize(); init(); draw();
         window.addEventListener('resize', function(){ resize(); init(); });
+      })();
+      </script>
+    # 仿 Thun888「主题改动小记」DIY 四件套: 运行时间 / 复制提醒 / 过期提醒 / 烟花
+    - |
+      <script>
+      (function(){
+        /* ===== 1. 运行时间(仿 Thun888 的「已运行 X 天」) ===== */
+        // ↓↓↓ 把下面这个日期改成你的建站日期即可 ↓↓↓
+        var SITE_START = new Date("2026-08-13T00:00:00");
+        function pad(n){ return n < 10 ? '0' + n : '' + n; }
+        var rt = document.createElement('div');
+        rt.className = 'site-runtime';
+        var footer = document.querySelector('footer.page-footer');
+        if (footer) { footer.appendChild(rt); }
+        function tickRuntime(){
+          var diff = Date.now() - SITE_START.getTime();
+          if (diff < 0) diff = 0;
+          var d = Math.floor(diff / 86400000);
+          var h = Math.floor(diff % 86400000 / 3600000);
+          var m = Math.floor(diff % 3600000 / 60000);
+          var s = Math.floor(diff % 60000 / 1000);
+          rt.textContent = '本站已运行 ' + d + ' 天 ' + pad(h) + ' 时 ' + pad(m) + ' 分 ' + pad(s) + ' 秒';
+        }
+        tickRuntime(); setInterval(tickRuntime, 1000);
+
+        /* ===== 2. 复制提醒(复制文字弹提示) ===== */
+        function showCopyToast(msg){
+          var t = document.getElementById('copy-toast');
+          if (!t) { t = document.createElement('div'); t.id = 'copy-toast'; t.className = 'copy-toast'; document.body.appendChild(t); }
+          t.textContent = msg; t.classList.add('show');
+          clearTimeout(t._t); t._t = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+        }
+        document.addEventListener('copy', function(){
+          var sel = window.getSelection();
+          if (sel && sel.toString().length > 10) { showCopyToast('内容已复制，请注明出处 ~'); }
+        });
+
+        /* ===== 3. 文章过期提醒(超过 180 天显示橙框) ===== */
+        var content = document.querySelector('.md-text.content');
+        if (content) {
+          var times = document.querySelectorAll('time[datetime]');
+          if (times.length) {
+            var last = times[times.length - 1];
+            var dt = new Date(last.getAttribute('datetime'));
+            if (!isNaN(dt.getTime())) {
+              var days = Math.floor((Date.now() - dt.getTime()) / 86400000);
+              if (days > 180) {
+                var box = document.createElement('div');
+                box.className = 'tag-plugin colorful note expire-note';
+                box.setAttribute('color', 'orange');
+                box.innerHTML = '<div class="title"><strong>提醒</strong></div>'
+                  + '<div class="body"><p>本文最后更新于 ' + days + ' 天前，其中某些信息可能已经过时，请谨慎使用！'
+                  + '<br>如果发现内容有误，请在评论区告知。</p></div>';
+                content.insertBefore(box, content.firstChild);
+              }
+            }
+          }
+        }
+
+        /* ===== 4. 烟花特效(点击任意处放烟花) ===== */
+        var fw = document.createElement('canvas');
+        fw.id = 'firework-canvas';
+        document.body.appendChild(fw);
+        var fctx = fw.getContext('2d');
+        var FW, FH, fps = [];
+        function fwResize(){ FW = fw.width = window.innerWidth; FH = fw.height = window.innerHeight; }
+        fwResize(); window.addEventListener('resize', fwResize);
+        function burst(x, y){
+          var hue = Math.floor(Math.random() * 360);
+          for (var i = 0; i < 30; i++) {
+            var a = Math.PI * 2 * i / 30;
+            var sp = Math.random() * 4 + 2;
+            fps.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, hue: hue });
+          }
+        }
+        document.addEventListener('click', function(e){ burst(e.clientX, e.clientY); });
+        function fwLoop(){
+          fctx.clearRect(0, 0, FW, FH);
+          for (var i = fps.length - 1; i >= 0; i--) {
+            var p = fps[i];
+            p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.life -= 0.012;
+            if (p.life <= 0) { fps.splice(i, 1); continue; }
+            fctx.beginPath(); fctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+            fctx.fillStyle = 'hsla(' + p.hue + ',100%,60%,' + p.life + ')';
+            fctx.fill();
+          }
+          requestAnimationFrame(fwLoop);
+        }
+        fwLoop();
       })();
       </script>
