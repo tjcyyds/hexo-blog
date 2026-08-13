@@ -58,64 +58,102 @@ inject:
     # 关于页专属样式(用 :has 作用域, 不误伤其他页面)
     - |
       <style>
+      /* 关于页统一用侧边栏「关于」的橙色，避免 var(--item-theme) 被全局青色覆盖 */
+      body:has(.breadcrumb[href*="/about/"]) { --about-theme: #fa6400; }
+
       /* 隐藏关于页的「发布于/更新于」元信息和空目录卡片 */
       body:has(.breadcrumb[href*="/about/"]) #post-meta { display: none; }
       body:has(.breadcrumb[href*="/about/"]) #data-toc { display: none; }
-      /* 座右铭：居中、加大、用关于页主题橙 */
-      body:has(.breadcrumb[href*="/about/"]) blockquote {
-        text-align: center;
-        font-size: 1.15em;
-        font-weight: 600;
-        border-left: none !important;
-        color: var(--item-theme, #fa6400);
-        margin: 2.6em 0 0.5em;
-        opacity: 1;
-      }
-      body:has(.breadcrumb[href*="/about/"]) blockquote p { margin: 0; }
-      /* 技术栈行内说明与上方列表拉开间距 */
-      body:has(.breadcrumb[href*="/about/"]) .md-text > p:last-of-type { margin-top: 6px; }
 
-      /* 首段导语：稍大、更松弛 */
-      body:has(.breadcrumb[href*="/about/"]) .md-text > p:first-of-type {
-        font-size: 1.08em;
-        line-height: 1.95;
-        color: #454b54;
+      /* 顶部副标题：用柔和橙色呼应主题，但不要太抢眼 */
+      body:has(.breadcrumb[href*="/about/"]) .article.banner .text.subtitle {
+        color: #e08334;
+        font-size: 0.95em;
+        opacity: 0.9;
       }
 
-      /* 小标题(平时在做 / 这个站点) 化身为分区标签 */
-      body:has(.breadcrumb[href*="/about/"]) .md-text > p > strong {
+      /* 首段导语：白色卡片感，带左侧橙色强调 */
+      body:has(.breadcrumb[href*="/about/"]) .md-text.content > p:first-of-type {
+        padding: 18px 20px;
+        background: rgba(255,255,255,.58);
+        border-radius: 14px;
+        border-left: 4px solid var(--about-theme);
+        box-shadow: 0 2px 8px rgba(0,0,0,.04);
+        font-size: 1.05em;
+        line-height: 1.85;
+        color: #3a3f47;
+      }
+
+      /* 分区标签（平时在做 / 这个站点） */
+      body:has(.breadcrumb[href*="/about/"]) .md-text.content > p > strong {
         display: block;
         font-size: 13px;
         letter-spacing: 3px;
-        color: var(--item-theme, #fa6400);
-        margin: 2em 0 .9em;
+        color: var(--about-theme);
+        margin: 2.2em 0 1em;
         padding-bottom: 6px;
-        border-bottom: 1px solid color-mix(in srgb, var(--item-theme, #fa6400) 28%, transparent);
+        border-bottom: 1px solid color-mix(in srgb, var(--about-theme) 24%, transparent);
       }
 
-      /* 兴趣清单：双列柔和卡片网格 */
-      body:has(.breadcrumb[href*="/about/"]) .md-text > ul {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+      /* 兴趣清单：胶囊标签横向排列 */
+      body:has(.breadcrumb[href*="/about/"]) .md-text.content > ul {
+        display: flex;
+        flex-wrap: wrap;
         gap: 10px;
         padding-left: 0;
         list-style: none;
       }
-      body:has(.breadcrumb[href*="/about/"]) .md-text > ul > li {
+      body:has(.breadcrumb[href*="/about/"]) .md-text.content > ul > li {
+        position: relative;
         margin: 0;
-        padding: 11px 14px 11px 16px;
-        background: rgba(255,255,255,.55);
-        border-radius: 10px;
-        border-left: 3px solid var(--item-theme, #fa6400);
-        font-size: 14px;
-        line-height: 1.55;
+        padding: 8px 14px 8px 26px;
+        background: rgba(255,255,255,.6);
+        border: 1px solid rgba(250,100,0,.14);
+        border-radius: 999px;
+        font-size: 13.5px;
+        line-height: 1.6;
+        color: #3a3f47;
         box-shadow: 0 1px 3px rgba(0,0,0,.04);
+        transition: transform .2s, box-shadow .2s, background .2s;
       }
-      body:has(.breadcrumb[href*="/about/"]) .md-text > ul > li::before { display: none; }
+      body:has(.breadcrumb[href*="/about/"]) .md-text.content > ul > li:hover {
+        transform: translateY(-2px);
+        background: rgba(255,255,255,.9);
+        box-shadow: 0 4px 10px rgba(250,100,0,.12);
+      }
+      body:has(.breadcrumb[href*="/about/"]) .md-text.content > ul > li::before {
+        content: "";
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--about-theme);
+        opacity: 0.85;
+      }
 
-      /* 窄屏单列 */
-      @media (max-width: 600px) {
-        body:has(.breadcrumb[href*="/about/"]) .md-text > ul { grid-template-columns: 1fr; }
+      /* 技术栈那一行：用橙色分隔符，和正文略区隔 */
+      body:has(.breadcrumb[href*="/about/"]) .md-text.content > p:last-of-type {
+        margin-top: 6px;
+        color: #555b64;
+      }
+
+      /* 座右铭：强制居中、加大、去左边框、橙色 */
+      body:has(.breadcrumb[href*="/about/"]) .md-text.content blockquote {
+        text-align: center !important;
+        font-size: 1.18em !important;
+        font-weight: 600 !important;
+        border-left: none !important;
+        color: var(--about-theme) !important;
+        margin: 2.6em 0 0.5em !important;
+        padding: 0 !important;
+        opacity: 1 !important;
+        background: transparent !important;
+      }
+      body:has(.breadcrumb[href*="/about/"]) .md-text.content blockquote p {
+        margin: 0 !important;
       }
       </style>
   script:
