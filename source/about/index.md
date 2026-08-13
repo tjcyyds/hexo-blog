@@ -2,6 +2,7 @@
 title: 关于
 date: 2026-08-13
 updated: 2026-08-13
+menu_id: about
 ---
 # 关于我
 
