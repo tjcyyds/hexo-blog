@@ -19,3 +19,6 @@ yarn-error.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# WorkBuddy 内部文件误入（非博客内容，勿提交）
+source/images/.workbuddy/
