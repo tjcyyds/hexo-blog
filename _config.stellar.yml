@@ -374,6 +374,19 @@ inject:
         else document.addEventListener('DOMContentLoaded', mount);
       })();
       </script>
+    # 页脚签名：博客英文名 Tongward123（Tong + ward + 123 = 一步一步向前）
+    - |
+      <script>
+      (function(){
+        var footer = document.querySelector('footer.page-footer');
+        if (!footer) return;
+        var sig = document.createElement('div');
+        sig.className = 'site-signature';
+        sig.style.cssText = 'font-size: 12px; opacity: .55; margin-top: 4px;';
+        sig.textContent = 'Tongward123 · 一步一步，每天记录一点';
+        footer.appendChild(sig);
+      })();
+      </script>
 
 
 # 关闭文章标题前缀符号（# = | : 等），保留 id 不影响目录锚点
