@@ -42,7 +42,7 @@ inject:
     - |
       <style>
       #jrsc-poem {
-        margin: 12px auto 0;
+        margin: 14px auto 18px;
         max-width: 92%;
         text-align: center;
         font-family: "LXGW WenKai Screen", KaiTi, STKaiti, serif;
@@ -354,9 +354,14 @@ inject:
           if (bannerText) {
             bannerText.appendChild(p);
           } else {
-            // 没有 banner 时，插到首页文章列表上方（自然段落，不挡导航）
-            var main = document.querySelector('.l_main#main') || document.querySelector('.l_main') || document.body;
-            main.insertBefore(p, main.firstChild);
+            // 没有 banner 时，插到导航 tabs 下方、文章列表上方（作为今日引言，不突兀）
+            var postList = document.querySelector('.post-list');
+            if (postList && postList.parentNode) {
+              postList.parentNode.insertBefore(p, postList);
+            } else {
+              var main = document.querySelector('.l_main#main') || document.querySelector('.l_main') || document.body;
+              main.insertBefore(p, main.firstChild);
+            }
           }
           render();
         }
