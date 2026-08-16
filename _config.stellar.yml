@@ -61,6 +61,16 @@ inject:
       body { background: transparent !important; }
       #thun-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
       </style>
+    # 近期发布卡片视觉升级（仿 Thun888）：大圆角+阴影+最新卡片左侧橙色条+封面手写感标注
+    - |
+      <style>
+      .post-list .post-card-wrap { margin-bottom: 16px; }
+      .post-list .post-card { border-radius: 16px; box-shadow: 0 3px 14px rgba(0,0,0,.06); overflow: hidden; }
+      .post-list .post-card-wrap:first-child .post-card { border-left: 4px solid #FA6400; }
+      .post-list .post-cover { position: relative; overflow: hidden; border-radius: 14px 14px 0 0; }
+      .card-cover-title { position: absolute; right: 12px; bottom: 10px; font-family: "LXGW WenKai Screen", KaiTi, "楷体", serif; font-size: 14px; letter-spacing: 1px; color: #fff; background: rgba(250,100,0,.88); padding: 3px 12px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+      .card-cover-empty { height: 84px; background: linear-gradient(135deg, #FFEFDF, #FFDFC2); }
+      </style>
     # 仿 Thun888「主题改动小记」的 DIY 样式: 运行时间/复制提醒/过期提醒/烟花
     - |
       <style>

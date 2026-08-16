@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prebuild": "cp source/_bak/index.ejs.original node_modules/hexo-theme-stellar/layout/index.ejs && cp source/_bak/tags.ejs.custom node_modules/hexo-theme-stellar/layout/tags.ejs && cp source/_bak/archive.ejs.custom node_modules/hexo-theme-stellar/layout/archive.ejs && cp source/_bak/nav_tabs_blog.ejs.custom node_modules/hexo-theme-stellar/layout/_partial/main/navbar/nav_tabs_blog.ejs",
+    "prebuild": "cp source/_bak/index.ejs.original node_modules/hexo-theme-stellar/layout/index.ejs && cp source/_bak/tags.ejs.custom node_modules/hexo-theme-stellar/layout/tags.ejs && cp source/_bak/archive.ejs.custom node_modules/hexo-theme-stellar/layout/archive.ejs && cp source/_bak/nav_tabs_blog.ejs.custom node_modules/hexo-theme-stellar/layout/_partial/main/navbar/nav_tabs_blog.ejs && cp source/_bak/post_card.ejs.custom node_modules/hexo-theme-stellar/layout/_partial/main/post_list/post_card.ejs",
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
