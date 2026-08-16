@@ -65,28 +65,36 @@ inject:
     - |
       <style>
       .post-list .post-card-wrap { margin-bottom: 24px; }
-      /* 页面浅灰背景 + 白色圆角卡片 */
+      /* 页面浅灰背景 + 白色圆角卡片（无边框，仅阴影，仿 Thun888） */
       .l_body { background: #f5f6f7; }
-      .post-list .post-card { background: #fff; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.05); overflow: hidden; border: 1px solid rgba(0,0,0,.03); }
-      .post-list .post-card-wrap:first-child .post-card { border-left: 4px solid #FA6400; }
+      .post-list .post-card { background: #fff; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.1); overflow: hidden; position: relative; z-index: 0; border: none; --img-br: 100%; --img-sat: 100%; }
+      .post-list .post-card-wrap:first-child .post-card { border-left: none; }
       .post-list .post-cover { position: relative; overflow: hidden; border-radius: 0; }
-      /* 标题：粗体黑色大号 */
-      .post-list .post-title { font-size: 20px; font-weight: 700; color: #1a1a1a; line-height: 1.4; margin: 0; }
-      /* 摘要：灰色中等字号，两行截断 */
-      .post-list .excerpt { color: #6b7280; font-size: 14px; line-height: 1.6; }
-      .post-list .excerpt p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      /* 标题：克制深色 + hover 荧光笔高亮（仿 Thun888 招牌交互） */
+      .post-list .post-title { font-size: 17px; font-weight: 600; color: #1f2328; line-height: 1.5; margin: 0; letter-spacing: 0; position: relative; width: fit-content; z-index: 0; }
+      .post-list .post-title h1, .post-list .post-title h2 { margin: 0; font-size: inherit; font-weight: inherit; }
+      .post-list .post-title::after { content: ''; position: absolute; left: 0; bottom: 2px; border-radius: 2px; z-index: -1; width: 100%; height: 0; opacity: 0; background: #FA6400; transition: height .25s ease, opacity .25s ease; }
+      .post-list .post-card:hover .post-title::after { height: 12px; opacity: .5; }
+      /* 摘要：稍小一点、行高更舒展，1rem 上下间距（仿 Thun888） */
+      .post-list .excerpt { color: #6b7280; font-size: 13.5px; line-height: 1.65; margin: 1rem 0; }
+      .post-list .excerpt p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
       /* 底部 meta：小字灰色，日期/字数灰、分类彩色(模板 inline 着色) */
       .post-list .meta { color: #9ca3af; font-size: 12px; }
       .post-list .meta .post-date-meta, .post-list .meta .post-wordcount-meta { color: #9ca3af; }
-      /* 左右布局（cover_title 文章）：左文右图 */
-      article.card-layout-side { display: flex; gap: 20px; align-items: stretch; padding: 20px 0; }
-      article.card-layout-side .card-side-text { flex: 1; min-width: 0; padding-left: 24px; }
-      /* 右侧图片封面：带从左到右渐变透明过渡，与白卡片自然融合 */
-      .card-cover-img-side { flex: 0 0 260px; align-self: stretch; min-height: 150px; position: relative; overflow: hidden; }
-      .card-cover-img-side img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .card-cover-img-side::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to right, #fff 0%, rgba(255,255,255,.25) 35%, transparent 70%); pointer-events: none; }
-      /* 封面右下角小角标（黑底白字） */
-      .card-cover-title { position: absolute; right: 12px; bottom: 12px; font-family: "LXGW WenKai Screen", KaiTi, serif; font-size: 12px; letter-spacing: 1px; color: #fff; background: rgba(0,0,0,.55); padding: 3px 10px; border-radius: 6px; z-index: 2; }
+      /* 左右布局（cover_title 文章）：左文右图 —— flex 布局，配图列 align-self:stretch 跟随文字列高度，img 绝对定位填满配图列 */
+      /* 注意：选择器需 ≥(0,2,1) 才能压过主题 .post-list .md-text 的 padding:1rem */
+      .post-list .post-card article.card-layout-side { display: flex; align-items: stretch; padding: 0; }
+      .post-list .post-card article.card-layout-side .card-side-text { flex: 1; min-width: 0; padding: 6px 20px; position: relative; z-index: 1; }
+      /* 配图列：固定宽度，flex stretch 自动拉满卡片高度（覆盖主题 .post-cover 的 width/负 margin） */
+      .post-list .post-card .card-cover-img-side { flex: 0 0 46%; position: relative; overflow: hidden; margin: 0; border-radius: 0 12px 12px 0; }
+      .post-list .post-card .card-cover-img-side img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; aspect-ratio: auto; display: block; opacity: .8; border-radius: 0 12px 12px 0; -webkit-mask: linear-gradient(90deg, transparent, #fff 50%); mask: linear-gradient(90deg, transparent, #fff 50%); }
+      /* 窄屏：文字保持足够宽（避免与右侧实色图区重叠），padding/标题/摘要间距收窄（仿 Thun888 ≤500px 规则） */
+      @media (max-width: 700px) {
+        .post-list .post-card article.card-layout-side .card-side-text { padding: 8px 16px; }
+        .post-list .post-card article.card-layout-side .card-side-text .post-title { margin: .5rem 0; }
+        .post-list .post-card article.card-layout-side .card-side-text .excerpt { margin: .5rem 0; }
+        .post-list .post-card .card-cover-img-side { flex-basis: 42%; }
+      }
       </style>
     # 仿 Thun888「主题改动小记」的 DIY 样式: 运行时间/复制提醒/过期提醒/烟花
     - |
@@ -368,8 +376,7 @@ inject:
               return;
             } catch (e) {}
           }
-          // 兜底文案（SDK 未加载或 API 失败时）
-          fill('晚来天欲雪，能饮一杯无', '白居易', '问刘十九');
+          // 兜底：API/SDK 不可用时不出诗词（已移除硬编码兜底文案）
         }
 
         function mount(){
