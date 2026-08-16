@@ -11,12 +11,13 @@ if (poster) {
 }
 function div_default() {
   var el = '';
-  el += '<article class="md-text">';
+  // 是否左右布局：有 cover_title 且无 obj.image（设计封面在右侧，文字在左侧）
+  var isSideLayout = post.cover_title && obj.image == undefined;
+  el += '<article class="md-text' + (isSideLayout ? ' card-layout-side' : '') + '">';
 
-  // 封面：优先用户指定图 > cover_title 设计封面 > unsplash自动图
-  if (obj.image || theme.article.auto_cover || post.cover_title) {
+  // 顶部封面：仅 obj.image 或 auto_cover 走 unsplash；cover_title 设计模式跳过顶部封面（在右侧渲染）
+  if (obj.image || (theme.article.auto_cover && !post.cover_title)) {
     if (obj.image != undefined) {
-      // 用户指定了图片
       var cover_url;
       if (obj.image.includes('/')) {
         cover_url = obj.image;
@@ -29,14 +30,7 @@ function div_default() {
         el += '<div class="card-cover-title">' + post.cover_title + '</div>';
       }
       el += '</div>';
-    } else if (post.cover_title) {
-      // 有 cover_title 但无图：渲染橙色渐变设计封面 + 大字标注
-      el += '<div class="post-cover card-cover-designed">';
-      el += '<div class="card-cover-deco"></div>';
-      el += '<div class="card-cover-title-main">' + post.cover_title + '</div>';
-      el += '</div>';
     } else {
-      // auto_cover：用 tags 拼 unsplash 随机图
       var cover_url;
       if (post.tags) {
         var params = '';
@@ -54,6 +48,11 @@ function div_default() {
         el += '</div>';
       }
     }
+  }
+
+  // 左右布局：标题/摘要/meta 包在左侧文字容器
+  if (isSideLayout) {
+    el += '<div class="card-side-text">';
   }
 
   // 标题
@@ -108,6 +107,16 @@ function div_default() {
     el += `<span class="pin">${icon('default:pin')}</span>`
   }
   el += '</div>';
+
+  // 左右布局：关闭左侧文字容器 + 右侧渲染设计封面
+  if (isSideLayout) {
+    el += '</div>';
+    el += '<div class="post-cover card-cover-designed card-cover-side">';
+    el += '<div class="card-cover-deco"></div>';
+    el += '<div class="card-cover-title-main">' + post.cover_title + '</div>';
+    el += '</div>';
+  }
+
   el += '</article>';
   return el;
 }
