@@ -36,6 +36,24 @@ menubar:
 inject:
   head:
     - <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/style.css">
+    # 今日诗词：加载 jinrishici 官方 SDK（免费古诗文 API）
+    - <script src="https://sdk.jinrishici.com/v2/jinrishici.js" charset="utf-8"></script>
+    # 今日诗词：首页 banner 下方居中显示一句古诗
+    - |
+      <style>
+      #jrsc-poem {
+        margin: 12px auto 0;
+        max-width: 92%;
+        text-align: center;
+        font-family: "LXGW WenKai Screen", KaiTi, STKaiti, serif;
+        font-size: 1.05em;
+        color: #4a5560;
+        opacity: 0;
+        transition: opacity .8s ease;
+      }
+      #jrsc-poem.show { opacity: 1; }
+      #jrsc-poem .author { font-size: .78em; opacity: .65; margin-left: 8px; }
+      </style>
     - |
       <style>
       body { background: transparent !important; }
@@ -294,6 +312,53 @@ inject:
           requestAnimationFrame(fwLoop);
         }
         fwLoop();
+      })();
+      </script>
+    # 今日诗词：首页 banner 下方显示一句古诗（仅首页；API 失败有兜底文案）
+    - |
+      <script>
+      (function(){
+        var path = location.pathname;
+        if (path !== '/' && path !== '/index.html') return; // 仅首页显示
+
+        function fill(content, author, title){
+          var p = document.getElementById('jrsc-poem');
+          if (!p) return;
+          p.innerHTML = content + (author ? '<span class="author">—— ' + author + (title ? '《' + title + '》' : '') + '</span>' : '');
+          p.classList.add('show');
+        }
+
+        function render(){
+          if (window.jinrishici) {
+            try {
+              jinrishici.load(function(result){
+                var d = (result && result.data) || {};
+                fill(d.content, d.origin && d.origin.author, d.origin && d.origin.title);
+              });
+              return;
+            } catch (e) {}
+          }
+          // 兜底文案（SDK 未加载或 API 失败时）
+          fill('晚来天欲雪，能饮一杯无', '白居易', '问刘十九');
+        }
+
+        function mount(){
+          if (document.getElementById('jrsc-poem')) { render(); return; }
+          var text = document.querySelector('.article.banner .text') || document.querySelector('.l_body.index .banner .text');
+          var p = document.createElement('div');
+          p.id = 'jrsc-poem';
+          if (text) {
+            text.appendChild(p);
+          } else {
+            // 找不到 banner 时的兜底：首页顶部居中浮层
+            p.style.cssText = 'position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;background:rgba(255,255,255,.72);padding:4px 16px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.06)';
+            document.body.appendChild(p);
+          }
+          render();
+        }
+
+        if (document.readyState !== 'loading') mount();
+        else document.addEventListener('DOMContentLoaded', mount);
       })();
       </script>
 
