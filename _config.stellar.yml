@@ -318,8 +318,9 @@ inject:
     - |
       <script>
       (function(){
-        var path = location.pathname;
-        if (path !== '/' && path !== '/index.html') return; // 仅首页显示
+        // 兼容根部署(/、/index.html)与 GitHub Pages 项目页(/hexo-blog/、/hexo-blog/index.html)
+        var path = location.pathname.replace(/index\.html$/, '').replace(/\/+$/, '');
+        if (path !== '' && path !== '/hexo-blog') return; // 仅首页显示
 
         function fill(content, author, title){
           var p = document.getElementById('jrsc-poem');
@@ -344,15 +345,18 @@ inject:
 
         function mount(){
           if (document.getElementById('jrsc-poem')) { render(); return; }
-          var text = document.querySelector('.article.banner .text') || document.querySelector('.l_body.index .banner .text');
           var p = document.createElement('div');
           p.id = 'jrsc-poem';
-          if (text) {
-            text.appendChild(p);
+          // 优先插到首页 banner/封面标题下方
+          var bannerText = document.querySelector('.article.banner .text')
+                         || document.querySelector('.l_cover .cover-title')
+                         || document.querySelector('.cover .text');
+          if (bannerText) {
+            bannerText.appendChild(p);
           } else {
-            // 找不到 banner 时的兜底：首页顶部居中浮层
-            p.style.cssText = 'position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;background:rgba(255,255,255,.72);padding:4px 16px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.06)';
-            document.body.appendChild(p);
+            // 没有 banner 时，插到首页文章列表上方（自然段落，不挡导航）
+            var main = document.querySelector('.l_main#main') || document.querySelector('.l_main') || document.body;
+            main.insertBefore(p, main.firstChild);
           }
           render();
         }
