@@ -304,3 +304,7 @@ style:
     h3: ''
     h4: ''
     h5: ''
+
+# 关闭文章底部自动显示的 CC 署名-非商业性使用-相同方式共享协议
+article:
+  license: false
