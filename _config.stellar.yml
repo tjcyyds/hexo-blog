@@ -53,8 +53,8 @@ inject:
       }
       #jrsc-poem.show { opacity: 1; }
       #jrsc-poem .author { font-size: .78em; opacity: .65; margin-left: 8px; }
-      /* 移动端隐藏诗词（Stellar <880px 时侧边栏变抽屉式单卡片，插 .post-list 之前会卡在导航和文章列表中间） */
-      @media (max-width: 880px) { #jrsc-poem { display: none; } }
+      /* 移动端(<667px, Stellar 真实断点 $device-mobile-max)隐藏诗词：此时整页单卡片，无合适位置 */
+      @media (max-width: 667px) { #jrsc-poem { display: none; } }
       </style>
     - |
       <style>
@@ -356,8 +356,10 @@ inject:
           if (bannerText) {
             bannerText.appendChild(p);
           } else {
-            // 没有 banner 时，插到导航 tabs 下方、文章列表上方（作为今日引言，不突兀）
-            var postList = document.querySelector('.post-list');
+            // 没有 banner 时，插到主内容区的文章列表(.l_main#main .post-list)上方
+            // 注意：侧边栏「最近更新」组件的 class 也含 post-list（widget-wrapper recent post-list），
+            // 必须限定在 .l_main#main 内，否则诗词会被插进侧边栏「关于」和「最近更新」之间
+            var postList = document.querySelector('.l_main#main .post-list') || document.querySelector('.l_main .post-list');
             if (postList && postList.parentNode) {
               postList.parentNode.insertBefore(p, postList);
             } else {
