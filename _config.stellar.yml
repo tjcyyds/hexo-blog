@@ -36,8 +36,8 @@ menubar:
 inject:
   head:
     - <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/style.css">
-    # 今日诗词：加载 jinrishici 官方 SDK（免费古诗文 API）
-    - <script src="https://sdk.jinrishici.com/v2/jinrishici.js" charset="utf-8"></script>
+    # 今日诗词：加载 jinrishici SDK（自托管，放博客自身 /hexo-blog/js/ 下，不依赖第三方 CDN）
+    - <script src="/hexo-blog/js/jinrishici.js" charset="utf-8"></script>
     # 今日诗词：首页 banner 下方居中显示一句古诗
     - |
       <style>
