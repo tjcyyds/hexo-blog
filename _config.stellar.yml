@@ -3,7 +3,7 @@
 
 # 左上角 logo 区(头像 + 标题 + 副标题)
 logo:
-  avatar: /hexo-blog/images/头像.jpg
+  avatar: /hexo-blog/images/avatar.jpg
   title: '[每日记录](/)'
   subtitle: 每天记录一点 | 见证成长
 
