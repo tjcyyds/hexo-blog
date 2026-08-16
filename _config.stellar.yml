@@ -68,8 +68,13 @@ inject:
       .post-list .post-card { border-radius: 16px; box-shadow: 0 3px 14px rgba(0,0,0,.06); overflow: hidden; }
       .post-list .post-card-wrap:first-child .post-card { border-left: 4px solid #FA6400; }
       .post-list .post-cover { position: relative; overflow: hidden; border-radius: 14px 14px 0 0; }
-      .card-cover-title { position: absolute; right: 12px; bottom: 10px; font-family: "LXGW WenKai Screen", KaiTi, "楷体", serif; font-size: 14px; letter-spacing: 1px; color: #fff; background: rgba(250,100,0,.88); padding: 3px 12px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
-      .card-cover-empty { height: 84px; background: linear-gradient(135deg, #FFEFDF, #FFDFC2); }
+      /* 设计感封面（cover_title 驱动，替代 unsplash 随机图）：橙色渐变 + 装饰双圆 + LXGW 大字 */
+      .card-cover-designed { height: 150px; background: linear-gradient(135deg, #FA6400 0%, #FFB37A 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+      .card-cover-deco { position: absolute; right: -30px; top: -30px; width: 130px; height: 130px; background: rgba(255,255,255,.18); border-radius: 50%; }
+      .card-cover-deco::after { content: ''; position: absolute; right: 50px; top: 50px; width: 70px; height: 70px; background: rgba(255,255,255,.14); border-radius: 50%; }
+      .card-cover-title-main { font-family: "LXGW WenKai Screen", KaiTi, serif; font-size: 24px; letter-spacing: 4px; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.18); z-index: 1; position: relative; padding: 0 24px; text-align: center; }
+      /* 有真实封面图时：右下角小角标 */
+      .card-cover-title { position: absolute; right: 12px; bottom: 10px; font-family: "LXGW WenKai Screen", KaiTi, serif; font-size: 13px; letter-spacing: 1px; color: #fff; background: rgba(0,0,0,.55); padding: 3px 10px; border-radius: 6px; z-index: 2; }
       </style>
     # 仿 Thun888「主题改动小记」的 DIY 样式: 运行时间/复制提醒/过期提醒/烟花
     - |
