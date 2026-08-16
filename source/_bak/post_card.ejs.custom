@@ -108,12 +108,20 @@ function div_default() {
   }
   el += '</div>';
 
-  // 左右布局：关闭左侧文字容器 + 右侧渲染设计封面
+  // 左右布局：关闭左侧文字容器 + 右侧渲染真实图片封面（unsplash 配图 + 小角标）
   if (isSideLayout) {
     el += '</div>';
-    el += '<div class="post-cover card-cover-designed card-cover-side">';
-    el += '<div class="card-cover-deco"></div>';
-    el += '<div class="card-cover-title-main">' + post.cover_title + '</div>';
+    var side_cover_url;
+    if (post.tags) {
+      var sp = '';
+      post.tags.reverse().forEach(function(t, i){ if (i > 0) sp += ','; sp += t.name; });
+      side_cover_url = 'https://source.unsplash.com/640x480/?' + sp;
+    } else {
+      side_cover_url = 'https://source.unsplash.com/random/640x480';
+    }
+    el += '<div class="post-cover card-cover-img-side">';
+    el += '<img src="' + side_cover_url + '"/>';
+    el += '<div class="card-cover-title">' + post.cover_title + '</div>';
     el += '</div>';
   }
 
