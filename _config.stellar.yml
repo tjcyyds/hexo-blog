@@ -35,6 +35,7 @@ menubar:
 # 注入: 仿 Thun888 的动态粒子背景 + 透明化 body 让背景透出
 inject:
   head:
+    - <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.7.0/style.css">
     - |
       <style>
       body { background: transparent !important; }
@@ -304,9 +305,9 @@ style:
     h3: ''
     h4: ''
     h5: ''
-  # 正文改用系统楷体，去掉黑体的"周正"感（Windows=KaiTi / Mac=STKaiti）
+  # 正文改用霞鹜文楷 Screen（LXGW WenKai Screen），手写文艺感、跨平台一致（字体 CDN 见 inject.head）
   font-family:
-    body: 'KaiTi, STKaiti, "Kaiti SC", "楷体", "BiauKai", serif'
+    body: '"LXGW WenKai Screen", KaiTi, STKaiti, "Kaiti SC", "楷体", "BiauKai", serif'
 
 # 关闭文章底部自动显示的 CC 署名-非商业性使用-相同方式共享协议
 article:
