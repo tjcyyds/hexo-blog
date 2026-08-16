@@ -4,8 +4,8 @@
 # 左上角 logo 区(头像 + 标题 + 副标题)
 logo:
   avatar: /hexo-blog/images/avatar.jpg
-  title: '[每日记录](/)'
-  subtitle: 每天记录一点 | 见证成长
+  title: '[Tongward123](/)'
+  subtitle: 为你千千万万遍~ | Luckier Happier Smoother
 
 # 侧边栏主功能导航菜单(仿 Thun888 的彩色图标菜单)
 # 颜色完全对齐 Thun888: 博客青/归档绿/标签红/关于橙
@@ -372,19 +372,6 @@ inject:
 
         if (document.readyState !== 'loading') mount();
         else document.addEventListener('DOMContentLoaded', mount);
-      })();
-      </script>
-    # 页脚签名：博客英文名 Tongward123（Tong + ward + 123 = 一步一步向前）
-    - |
-      <script>
-      (function(){
-        var footer = document.querySelector('footer.page-footer');
-        if (!footer) return;
-        var sig = document.createElement('div');
-        sig.className = 'site-signature';
-        sig.style.cssText = 'font-size: 12px; opacity: .55; margin-top: 4px;';
-        sig.textContent = 'Tongward123 · 一步一步，每天记录一点';
-        footer.appendChild(sig);
       })();
       </script>
 
